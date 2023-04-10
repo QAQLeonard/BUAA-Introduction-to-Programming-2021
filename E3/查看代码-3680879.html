@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!-- saved from url=(0104)https://d.buaa.edu.cn/http/77726476706e69737468656265737421a1a70fce726126022b5cc7f4cb/submission/3680879 -->
+<html lang="zh-CN"><head><meta http-equiv="Content-Type" content="text/html; charset=UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1"><meta name="keywords" content="OJ,Online Judge,ACM,BUAA,beihang,评测,教学"><meta name="author" content="北航程序设计与算法研究实验室"><meta name="generator" content="Ghost 0.5"><meta name="renderer" content="webkit"><meta name="referrer" content="always"><meta http-equiv="X-UA-Compatible" content="IE=EmulateIE11"><title>查看代码-3680879</title>
+
+ <script src="./查看代码-3680879_files/highlight.pack.js.下载"></script><link rel="stylesheet" href="./查看代码-3680879_files/tomorrow.css"><style>code {
+    font-family: 'Source Code Pro', Consolas, monospace;font-size: 20px;
+}
+pre {
+    border: 1px solid black;
+    margin: 0 auto;
+    max-width: 960px;
+    font-family: 'Source Code Pro', Consolas, monospace;
+    font-size: 20px;
+    margin-top: 20px;
+}</style></head><body><pre><code class="c hljs cpp"><span class="hljs-comment">/* 
+ Author: Grub_49
+ Result: TLE	Submission_id: 3680879
+ Created at: Sun Oct 03 2021 14:29:00 GMT+0800 (China Standard Time)
+ Problem_id: 4650	Time: 1984	Memory: 2464
+*/</span>
+
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;stdio.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">include</span><span class="hljs-string">&lt;limits.h&gt;</span></span>
+<span class="hljs-preprocessor">#<span class="hljs-keyword">define</span> getbit(x,y) x&gt;&gt;y&amp;<span class="hljs-number">1</span></span>
+
+<span class="hljs-keyword">typedef</span> <span class="hljs-keyword">struct</span> aPerson
+{
+    <span class="hljs-keyword">int</span> score;
+    <span class="hljs-keyword">int</span> group;
+}Peer;
+
+<span class="hljs-function"><span class="hljs-keyword">int</span> <span class="hljs-title">main</span><span class="hljs-params">()</span>
+</span>{
+    <span class="hljs-keyword">int</span> n,k,tempClassNum,stdClassNum=<span class="hljs-number">0</span>;
+    <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d%d"</span>,&amp;n,&amp;k);
+    tempClassNum = n;
+    <span class="hljs-keyword">const</span> <span class="hljs-keyword">int</span> N = n;
+    Peer student[N];
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=N;i++)
+    {
+        <span class="hljs-built_in">scanf</span>(<span class="hljs-string">"%d"</span>,&amp;student[i-<span class="hljs-number">1</span>].score);
+        student[i-<span class="hljs-number">1</span>].group=-<span class="hljs-number">1</span>;
+    }
+    <span class="hljs-comment">//全部的分班操作</span>
+    <span class="hljs-keyword">int</span> preStdClassNum;
+    AGAIN:
+    preStdClassNum=stdClassNum;
+    <span class="hljs-comment">//printf("*\n");</span>
+    <span class="hljs-keyword">if</span>(tempClassNum&lt;k)
+    {
+        stdClassNum++;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=N;i++)
+        {
+            <span class="hljs-keyword">if</span>(student[i-<span class="hljs-number">1</span>].group==-<span class="hljs-number">1</span>)
+            {
+                student[i-<span class="hljs-number">1</span>].group=stdClassNum;
+                <span class="hljs-comment">//printf("C分配好了一位同学在%d班！\n",stdClassNum);</span>
+            }
+        }
+        tempClassNum=<span class="hljs-number">0</span>;
+    }
+    <span class="hljs-keyword">else</span>
+    {
+        <span class="hljs-keyword">for</span>(;tempClassNum&gt;=k;)
+        {
+            <span class="hljs-keyword">if</span>(tempClassNum&gt;=<span class="hljs-number">2</span>*k)
+            {
+                stdClassNum++;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>,j=<span class="hljs-number">0</span>;i&lt;k;j++)
+                {
+                    <span class="hljs-keyword">if</span>(student[j].group==-<span class="hljs-number">1</span>)
+                    {
+                        student[j].group=stdClassNum;
+                        i++;
+                        <span class="hljs-comment">//printf("A分配好了一位同学在%d班！\n",stdClassNum);</span>
+                    }
+
+                }
+                tempClassNum-=k;
+            }
+            <span class="hljs-keyword">else</span>
+            {
+                stdClassNum++;
+                <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">0</span>,j=<span class="hljs-number">0</span>;i&lt;tempClassNum;j++)
+                {
+                    <span class="hljs-keyword">if</span>(student[j].group==-<span class="hljs-number">1</span>)
+                    {
+                        student[j].group=stdClassNum;
+                        i++;
+                        <span class="hljs-comment">//printf("B分配好了一位同学在%d班！\n",stdClassNum);</span>
+
+                    }
+                }
+                tempClassNum=<span class="hljs-number">0</span>;
+            }
+        }
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=preStdClassNum+<span class="hljs-number">1</span>;i&lt;=stdClassNum;i++)
+        {
+            <span class="hljs-keyword">int</span> temp=INT_MIN,id=<span class="hljs-number">0</span>;
+            <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;N;j++)
+            {
+                <span class="hljs-keyword">if</span>(student[j].group==i)
+                <span class="hljs-keyword">if</span>(temp&lt;student[j].score)
+                {
+                    temp=student[j].score;
+                    id=j;
+                }
+            }
+            student[id].group=-<span class="hljs-number">1</span>;
+            tempClassNum++;
+        }
+    }
+    <span class="hljs-keyword">if</span>(tempClassNum&gt;<span class="hljs-number">0</span>)<span class="hljs-keyword">goto</span> AGAIN;
+    <span class="hljs-comment">//分班结束</span>
+    <span class="hljs-comment">//printf("分班结束\n");</span>
+    <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> i=<span class="hljs-number">1</span>;i&lt;=stdClassNum;i++)
+    {
+        <span class="hljs-keyword">int</span> temp=INT_MAX,id=<span class="hljs-number">0</span>;
+        <span class="hljs-keyword">for</span>(<span class="hljs-keyword">int</span> j=<span class="hljs-number">0</span>;j&lt;N;j++)
+        {
+            <span class="hljs-keyword">if</span>(student[j].group==i)
+            <span class="hljs-keyword">if</span>(temp&gt;student[j].score)
+            {
+                    temp=student[j].score;
+                    id=j;
+            }
+        }
+        <span class="hljs-built_in">printf</span>(<span class="hljs-string">"%d\n"</span>,student[id].score);
+    }
+}</code></pre><script>vpn_eval((function(){
+hljs.initHighlightingOnLoad()
+
+}
+).toString().slice(12, -2),"");</script></body></html>
